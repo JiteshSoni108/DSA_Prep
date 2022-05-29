@@ -1,0 +1,58 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class MaxEmpAttendEvent {
+	public static void main(String[] args) {
+		System.out.println(solution(new String[] {"039","4","14","32" , "" ,"34","7"}));
+	}
+	
+	public static int solution(String [] E) {
+		HashMap<Integer , List<Integer>> daysMap= new HashMap<>();
+		int index=0;
+		
+		// convert each String to integer
+		for(String s : E) {
+			List<Integer> list= new ArrayList<Integer>();
+			for(int i=0; i< s.length();i++) {
+				int k= Integer.parseInt(String.valueOf(s.charAt(i)));
+				list.add(k);
+			}
+			daysMap.put(index, list);
+			++index;
+		}
+		
+		Map<Integer, Long> repeatDayscount= new HashMap<Integer, Long>();
+		for(List<Integer> daysEntry: daysMap.values()) {
+			for(Integer n : daysEntry) {
+				Long repeatDayCount=repeatDayscount.get(n);
+				if(repeatDayCount == null) {
+					repeatDayCount=0L; // default on null
+				}
+				repeatDayscount.put(n, repeatDayCount+1);
+			}
+		}
+		
+		Iterator<Long> it=repeatDayscount.values().iterator();
+		while(it.hasNext()) {
+			Long count=it.next();
+			if(count==1L) {
+				it.remove();
+			}
+		}
+		// count repeat day for each employee
+		Map<String , Integer> empDayCount= new HashMap<String, Integer>();
+		Set<Integer> set=repeatDayscount.keySet();
+		for(String s: E) {
+			for(int a: set) {
+				if(s.contains(a+"")) {
+					empDayCount.put(s, a);
+				}
+			}
+		}
+		return (int) empDayCount.entrySet().stream().count();
+	}
+}
