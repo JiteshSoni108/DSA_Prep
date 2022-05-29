@@ -1,0 +1,32 @@
+public class binarySearch {
+	
+	public static void main(String[] args) {
+		int [] input= {1,2,3,4,50,58,100};
+		System.out.println(binarySearchVal(input, 1));
+	}
+	public static int binarySearchVal(int [] input , int key)
+	{
+		int low=0 ,  high=input.length;
+		while(low <= high) {
+			int mid=low + (high - low)/2;
+			System.out.println("mid = (low)" +low +"+"+"((high)"+high+"-(low)"+low+")/2");
+			System.out.println(mid);
+			if(input[mid] == key)
+				return mid;
+			else if (key >= input[mid]) {
+				System.out.println(key + ">=" + input[mid]);
+				System.out.println("low=mid+1");
+				low=mid+1;
+			}
+				
+			else {
+				System.out.println(key + "<=" + input[mid]);
+				System.out.println("high=mid -1");
+				high=mid -1;
+				}
+		}
+		
+		return -1;
+		
+	}
+}
