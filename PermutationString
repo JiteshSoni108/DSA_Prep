@@ -1,0 +1,37 @@
+public class PermutationString {
+	public static void main(String[] args) {
+		System.out.println(checkInclusion("abc", "eidbacoo"));
+	}
+	
+	static boolean checkInclusion(String subString , String input) {
+		int len1= subString.length() , len2=input.length();
+		if(len1 > len2) return false;
+		int[] count =new int[26];
+		for(int i=0; i < len1;i++)
+			count[subString.charAt(i) -'a']++;
+		
+		// Print count 
+		for(int i=0;i < 26;i++)
+			System.out.print(count[i] + " ");
+		
+		for(int i=0; i< len2; i++) {
+			System.out.println(input.charAt(i));
+			count[input.charAt(i) -'a']--;
+			if(i - len1 >= 0) {
+				count[input.charAt(i - len1) -'a']++;
+				}
+			if(allZero(count)) return true;
+		}
+		
+		return false;
+		
+	}
+	
+	static boolean allZero(int[] count) {
+		for(int i=0; i <26; i++)
+			if(count[i] !=0) {
+				return false;
+			}
+		return true;
+	}
+}
