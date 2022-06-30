@@ -1,0 +1,33 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class LongestSubString {
+
+	public static void main(String[] args) {
+		
+		System.out.println(longestSubarray(new int[] {8,2,4,7}, 4));
+	}
+	 static int longestSubarray(int[] nums, int limit) {
+	        int res=0;
+	        Deque<Integer> mins= new ArrayDeque<>();
+	        Deque<Integer> maxs= new ArrayDeque<>();
+	        for(int i=0 , j=0; j!=nums.length;j++){
+	            while(!mins.isEmpty() && nums[j] <= nums[mins.peekLast()])
+	                mins.pollLast();
+	            mins.offerLast(j);
+	            while(!maxs.isEmpty() && nums[j] >= nums[maxs.peekLast()])
+	                maxs.pollLast();
+	             maxs.offerLast(j);
+	            
+	            while(nums[maxs.peekFirst()] - nums[mins.peekFirst()] > limit){
+	                i=Math.min(maxs.peekFirst(),mins.peekFirst());
+	                    if(maxs.peekFirst() == i) maxs.pollFirst();
+	                    if(mins.peekFirst() == i) mins.pollFirst();
+	                i++;
+	            }
+	            System.out.println(res + " "+ (j + 1 - i));
+	           res =Math.max(res,j+1-i);
+	        }
+	        return res;
+	    }
+}
