@@ -1,0 +1,33 @@
+public class ValidParam {
+	
+
+    public static boolean isValid(String s) {
+    
+    System.out.println(isValid("{}}"));
+    }
+    
+    public static boolean isValid(String s) {
+        
+        Stack<Character> queue= new Stack<>();
+        for(int i=0 ; i < s.length() ; i++){
+            char cur=s.charAt(i);
+            if(isOpening(cur)) queue.push(cur);
+            else{
+                if(queue.isEmpty()) return false;
+                else if (!isMatching(queue.peek() ,cur )) return false;
+                else queue.pop();
+            }
+        }
+        return queue.isEmpty();
+    }
+    
+    public static boolean isOpening(char first )
+    {
+        return first== '(' ||  first== '{' || first== '[' ;
+    }
+    
+    public static boolean isMatching(char first , char second)
+    {
+        return (first== '(' && second == ')') ||  (first== '{' && second == '}')  || (first== '[' && second ==']') ;
+    }
+}
