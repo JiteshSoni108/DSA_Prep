@@ -1,0 +1,79 @@
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Queue;
+import java.util.TreeMap;
+
+/*
+		  20
+	10			30
+50		60	5		40
+
+*/
+public class BSTVerticalView {
+
+	V_Node root;
+	
+	public static void main(String[] args) {
+		BSTVerticalView tree= new  BSTVerticalView();
+		tree.root= new V_Node(10);
+		tree.root.left= new V_Node(20);
+		tree.root.right= new V_Node(30);
+		tree.root.left.right= new V_Node(50);
+		tree.root.left.right.right= new V_Node(40);
+		ArrayList<Integer> verticalOrder= verticalOrder(tree.root);
+		verticalOrder.forEach(data->System.out.print(data + " "));
+		
+	}
+	
+	static ArrayList<Integer> verticalOrder(V_Node root){
+		Queue<Pair> queue= new ArrayDeque<>();
+		Map<Integer , ArrayList<Integer>> map= new TreeMap<>();
+		queue.add(new Pair(0, root));
+		while(!queue.isEmpty()) {
+			Pair cur= queue.poll();
+			if(map.containsKey(cur.hDistance))
+				map.get(cur.hDistance).add(cur.node.data);
+			else {
+				ArrayList<Integer> temp= new ArrayList<Integer>();
+				temp.add(cur.node.data);
+				map.put(cur.hDistance, temp);
+			}
+			
+			if(cur.node.left != null)
+				queue.add(new Pair(cur.hDistance - 1, cur.node.left));
+			
+			if(cur.node.right !=null)
+				queue.add(new Pair(cur.hDistance + 1 , cur.node.right));
+		}
+		ArrayList<Integer> an= new ArrayList<Integer>();
+		for(Map.Entry<Integer , ArrayList<Integer>> entry : map.entrySet()) {
+			an.addAll(entry.getValue());
+		}
+		return an;
+	}
+	
+	static class Pair{
+		int hDistance;
+		V_Node node;
+		
+		Pair(int hDistance , V_Node node){
+			this.hDistance=hDistance;
+			this.node=node;
+		}
+		
+	}
+
+}
+
+
+
+class V_Node{
+
+	int data;
+	V_Node left, right;
+	V_Node(int item){
+		data=item;
+		left = right = null;
+	}
+}
